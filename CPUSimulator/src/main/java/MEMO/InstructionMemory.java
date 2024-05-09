@@ -14,8 +14,18 @@ public class InstructionMemory {
     private  int maxPages;
     private int maxInstructionCountOnPage; // 1024/7
     private  int maxInstructionSize; //44 bits -> 1 byte for spec so ist now 4 or 7 ~  byte
-    private  int pageSize;// 1024 byte
+    private  int pageSize;
 
+    public InstructionMemory(int maxPages, int pageSize) {
+        this.maxPages = maxPages;
+        this.pageSize = pageSize;
+        maxInstructionSize= 7;
+        maxInstructionCountOnPage= pageSize/ maxInstructionSize;
+        pages = new MemoryPage[maxPages];
+        for (int i = 0; i < maxPages; i++) {
+            pages[i] = new MemoryPage(pageSize);
+        }
+    }
 
     public void writeInstruction(byte[] instruction){
 

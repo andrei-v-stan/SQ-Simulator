@@ -5,13 +5,16 @@ import java.util.List;
 public class MemoryManger {
 
     public static class MemoryLocation{
-        public String UsedBy;
+        public String usedBy;
         public int pageNumber;
         public int offset;
         public int length;
     }
     public static List<MemoryLocation> memoryLocations;
 
+    public static boolean isLocationUsed(short location, int length){
+        return isLocationUsed(location/ 1024, location% 1024, length);
+    }
     public static boolean isLocationUsed(int pageNumber, int offset, int length){
 
         for(var memoryLocation: memoryLocations){
@@ -20,6 +23,13 @@ public class MemoryManger {
                 return true;
         }
         return false;
+    }
+    public static MemoryLocation findMemoryLocationByName(String name){
+        for(var memoryLocation: memoryLocations){
+            if (memoryLocation.usedBy.equals(name))
+                return memoryLocation;
+        }
+        return null;
     }
 
 

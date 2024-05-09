@@ -4,16 +4,22 @@ import CPU.Info.InstructionSet;
 import CPU.Info.NamedByte;
 import MEMO.InstructionMemory;
 import MEMO.Memory;
+import MEMO.MemoryManger;
 import UTILS.CustomException;
 
 import  java.util.*;
 public class CPU {
     public HashMap<String, Register> registers;
-    private ALU alu;
     private InstructionMemory instructionMemory;
     private Memory memo;
 
     private boolean EF, CF, OF, SF, PF;
+
+    public CPU(InstructionMemory instructionMemory, Memory memo) {
+        this.instructionMemory = instructionMemory;
+        this.memo = memo;
+        Initialize();
+    }
 
     private void Initialize(){
         registers= new HashMap<String, Register>();
@@ -23,23 +29,25 @@ public class CPU {
         registers.put("DX", new Register((byte) 0b00000100));
         registers.put("EX", new Register((byte) 0b00000101));
         registers.put("FX", new Register((byte) 0b00000110));
-        registers.put("SP", new Register((byte) 0b00000111));
-        registers.put("PC", new Register((byte) 0b00001000));
+        registers.put("GX", new Register((byte) 0b00000111));
+        registers.put("HX", new Register((byte) 0b00001000));
+
+        registers.put("SP", new Register((byte) 0b00001001));
+        registers.put("PC", new Register((byte) 0b00001010));
     }
 
-    private void execute(int programOffset, int instructionCount){
+    private void execute(int programOffset, int instructionCount) throws CustomException {
 
 
         for (int currentInstruction=0; currentInstruction<= instructionCount; currentInstruction++){
 
             var rawInstruction = instructionMemory.readInstruction(currentInstruction + programOffset);
-
+            try {
+                prepareInstruction(rawInstruction);
+            }catch (Exception e){
+                throw new CustomException(String.format("Error at line  %d\n%s",currentInstruction, e.getMessage()));
+            }
         }
-        //while there are instruction
-        // InstructionMemory.readInstruction()
-        // DECODE Instruction
-        // execute Instruction
-            // -> Arithm, Logical, read write Memo, funct call, push pop, IO, jumps
 
     }
     // in the future execute with breakpoints
@@ -87,22 +95,56 @@ public class CPU {
                 break;
             case "JUMP":
                 executeInstructionJump(mappedInstr, firstOperand, modeFirstOperand);
+                break;
+            case "STACK":
+                executeInstructionStack(mappedInstr, firstOperand, modeFirstOperand);
+                break;
+            case "IO":
+                break;
+            case "FCT":
+                break;
         }
     }
 
-    private void executeInstructionJump(NamedByte mappedInstr, short firstOperand, NamedByte modeFirstOperand) throws CustomException {
-        var firstValue= resolveAddressing(modeFirstOperand.name, firstOperand);
+    private void executeInstructionStack(NamedByte mappedInstr, short operand, NamedByte modeOperand) throws CustomException {
+        var firstValue= resolveAddressing(modeOperand.name, operand);
+        if (firstValue== null){
+            throw new CustomException("Could not resolve addressing of operands");
+        }
+        var sp= registers.get("SP");
+        switch (mappedInstr.name){
+            case "PUSH":
+                if (MemoryManger.isLocationUsed((short) (sp.getValue()+16), 16)){
+                    throw new CustomException("Stack Overflow");
+                }
+                memo.write(sp.getValue(), operand);
+                sp.setValue((short) (sp.getValue()+16));
+
+                break;
+            case "POP":
+                if (MemoryManger.isLocationUsed((short) (sp.getValue()-16), 16)){
+                    throw new CustomException("Stack Underflow");
+                }
+                writeToAddress(modeOperand.name, operand, memo.read(sp.getValue(), 16));
+
+                break;
+        }
+
+    }
+
+    private void executeInstructionJump(NamedByte mappedInstr, short operand, NamedByte modeOperand) throws CustomException {
+        var firstValue= resolveAddressing(modeOperand.name, operand);
         if (firstValue== null){
             throw new CustomException("Could not resolve addressing of operands");
         }
         short line = switch (mappedInstr.name) {
-            case "JMP" -> firstOperand;
-            case "JE" -> EF ? firstOperand : -1;
-            case "JNE" -> !EF ? firstOperand : -1;
-            case "JL" -> (SF != OF) ? firstOperand : -1;
-            case "JG" -> (!EF && SF == OF) ? firstOperand : -1;
-            case "JLE" -> (SF != OF || EF) ? firstOperand : -1;
-            case "JGE" -> (SF == OF) ? firstOperand : -1;
+            case "JMP" -> operand;
+            case "JE" -> EF ? operand : -1;
+            case "JNE" -> !EF ? operand : -1;
+            case "JL" -> (SF != OF) ? operand : -1;
+            case "JG" -> (!EF && SF == OF) ? operand : -1;
+            case "JLE" -> (SF != OF || EF) ? operand : -1;
+            case "JGE" -> (SF == OF) ? operand : -1;
             default -> -1;
         };
 
@@ -193,7 +235,7 @@ public class CPU {
                 }
                 register.setValue(result);
             case "INDIRECT":
-                registers.get("FX").setValue(result);
+                registers.get("HX").setValue(result);
 
         }
     }
@@ -211,7 +253,7 @@ public class CPU {
                 }
                 return register.getValue();
             case "INDIRECT":
-                return registers.get("FX").getValue();
+                return registers.get("HX").getValue();
 
         }
         return null;
@@ -233,14 +275,12 @@ public class CPU {
     }
 
     private boolean calculateParity(short result) {
-        // Count the number of set bits in the result
         int bitCount = 0;
         for (int i = 0; i < 16; i++) {
             if (((result >> i) & 1) == 1) {
                 bitCount++;
             }
         }
-        // Parity is even if bit count is even
         return bitCount % 2 == 0;
     }
 

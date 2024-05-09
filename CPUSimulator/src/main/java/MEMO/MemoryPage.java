@@ -3,8 +3,8 @@ package MEMO;
 public class MemoryPage {
     private  byte[] data;
 
-    public MemoryPage() {
-        data= new byte[1024];
+    public MemoryPage(int pageSize) {
+        data= new byte[pageSize];
     }
 
     public byte[] getData() {

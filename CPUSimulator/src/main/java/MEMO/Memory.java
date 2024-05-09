@@ -3,11 +3,11 @@ package MEMO;
 public class Memory {
     private MemoryPage[] pages; // Array to hold pages
     private int pageSize; // Size of each page
-    public Memory(int pageCount) {
-        pageSize = 1024;
+    public Memory(int pageCount, int pageSize) {
+        this.pageSize = pageSize;
         pages = new MemoryPage[pageCount];
         for (int i = 0; i < pageCount; i++) {
-            pages[i] = new MemoryPage();
+            pages[i] = new MemoryPage(pageSize);
         }
     }
     private void Initialize(){
