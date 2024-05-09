@@ -1,4 +1,4 @@
-package main.java.CPU.parser;
+package CPU.parser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class ParserImpl implements Parser {
                     tokens.add(currentToken.toString());
                     currentToken.setLength(0);
                 }
-            } else if (c == ',' || c == '\n') {
+            } else if (c == ',' || c == '\n' || c == ':') {
                 if (!currentToken.isEmpty()) {
                     tokens.add(currentToken.toString());
                     currentToken.setLength(0);
@@ -72,14 +72,32 @@ public class ParserImpl implements Parser {
 
     private static ASTNode parseLine() {
         String instruction = getNextToken();
-        String operand1 = getNextToken();
+        String operand1 = null;
         String operand2 = null;
 
-        if (peekNextToken() != null && peekNextToken().equals(",")) {
-            getNextToken(); // consume ","
-            operand2 = getNextToken();
+        if (peekNextToken() != null && peekNextToken().equals(":")) {
+            getNextToken();
+        } else {
+            operand1 = getNextToken();
+            if (peekNextToken() != null && peekNextToken().equals(",")) {
+                getNextToken();
+                operand2 = getNextToken();
+            }
         }
 
         return new ASTNode(instruction, operand1, operand2);
+    }
+
+    public static void main(String[] args) {
+        String sourceCode = "MOV AX, 10\n" +
+                "ADD AX, BX\n" +
+                "SUB CX, 5\n" +
+                "JMP _start\n" +
+                "start:\n" +
+                "CALL _start\n";
+
+        var parser = new ParserImpl();
+        ASTNode ast = parser.parse(sourceCode);
+        System.out.println(ast);
     }
 }

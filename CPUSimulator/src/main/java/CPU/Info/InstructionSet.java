@@ -32,6 +32,7 @@ public class InstructionSet {
         instructions.add(new NamedByte("POP", (byte) 0b00010101));
         instructions.add(new NamedByte("READ", (byte) 0b00010110));
         instructions.add(new NamedByte("WRITE", (byte) 0b00010111));
+        instructions.add(new NamedByte("CALL", (byte) 0b00011000));
     }
 
 
