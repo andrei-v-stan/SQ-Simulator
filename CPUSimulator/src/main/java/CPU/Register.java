@@ -19,4 +19,12 @@ public class Register {
     public void setValue(short value) {
         this.value = value;
     }
+
+    public byte getRegisterCode() {
+        return registerCode;
+    }
+
+    public void setRegisterCode(byte registerCode) {
+        this.registerCode = registerCode;
+    }
 }
