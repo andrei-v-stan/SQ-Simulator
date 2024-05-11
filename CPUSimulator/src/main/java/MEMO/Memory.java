@@ -42,6 +42,6 @@ public class Memory {
         // Write data to the page
     }
 
-    // STACK reserve
+
 
 }

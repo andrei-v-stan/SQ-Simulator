@@ -45,7 +45,7 @@ public class CPU {
 
 
         for (int currentInstruction=0; currentInstruction<= instructionCount; currentInstruction++){
-
+            registers.get("PC").setValue((short) (currentInstruction + programOffset));
             var rawInstruction = instructionMemory.readInstruction(currentInstruction + programOffset);
             try {
                 prepareInstruction(rawInstruction);
@@ -111,9 +111,50 @@ public class CPU {
                 executeInstructionIO(mappedInstr, firstOperand, modeFirstOperand, secondOperand, modeSecondOperand);
                 break;
             case "FCT":
+                executeInstructionFct(mappedInstr, firstOperand, modeFirstOperand);
                 break;
         }
     }
+
+    private void executeInstructionFct(NamedByte mappedInstr, short operand, NamedByte modeOperand) throws CustomException {
+        var firstValue= resolveAddressing(modeOperand.name, operand);
+
+        if(firstValue == null){
+            throw new CustomException("Could not resolve addressing of operands");
+        }
+
+        switch (mappedInstr.name){
+            case "CALL":
+
+                writeToStack(registers.get("AX").getValue());
+                writeToStack(registers.get("BX").getValue());
+                writeToStack(registers.get("CX").getValue());
+                writeToStack(registers.get("DX").getValue());
+                writeToStack(registers.get("EX").getValue());
+                writeToStack(registers.get("FX").getValue());
+                writeToStack(registers.get("GX").getValue());
+                writeToStack(registers.get("HX").getValue());
+
+                writeToStack(registers.get("PC").getValue());
+
+                registers.get("PC").setValue(firstValue);
+                break;
+            case "RET":
+                registers.get("PC").setValue(readFromStack());
+
+                registers.get("HX").setValue(readFromStack());
+                registers.get("GX").setValue(readFromStack());
+                registers.get("FX").setValue(readFromStack());
+                registers.get("EX").setValue(readFromStack());
+                registers.get("DX").setValue(readFromStack());
+                registers.get("CX").setValue(readFromStack());
+                registers.get("BX").setValue(readFromStack());
+                registers.get("AX").setValue(readFromStack());
+                break;
+        }
+    }
+
+
 
     private void executeInstructionIO(NamedByte mappedInstr, short firstOperand, NamedByte modeFirstOperand, short secondOperand, NamedByte modeSecondOperand) throws CustomException {
         var firstValue= resolveAddressing(modeFirstOperand.name, firstOperand);
@@ -216,7 +257,7 @@ public class CPU {
         var firstValue= resolveAddressing(modeFirstOperand.name, firstOperand);
         var secondValue= resolveAddressing(modeSecondOperand.name, secondOperand);
 
-        if (firstValue== null || secondValue == null){
+        if (firstValue== null || (secondValue == null && mappedInstr.name.equals("NOT"))){
             throw new CustomException("Could not resolve addressing of operands");
         }
 
@@ -314,6 +355,17 @@ public class CPU {
             }
         }
         return bitCount % 2 == 0;
+    }
+    private void writeToStack(short data){
+        var sp= registers.get("SP");
+        memo.write(sp.getValue(),data);
+        sp.setValue((short) (sp.getValue()+16));
+    }
+    private short readFromStack() {
+        var sp= registers.get("SP");
+        var buff= memo.read(sp.getValue(),16);
+        sp.setValue((short) (sp.getValue()-16));
+        return buff;
     }
 
 }
