@@ -1,4 +1,6 @@
 package CPU;
+import CORE.ConfigFileReader;
+import CORE.Configurator;
 import CPU.Info.AddressingModes;
 import CPU.Info.InstructionSet;
 import CPU.Info.NamedByte;
@@ -106,10 +108,34 @@ public class CPU {
                 executeInstructionStack(mappedInstr, firstOperand, modeFirstOperand);
                 break;
             case "IO":
+                executeInstructionIO(mappedInstr, firstOperand, modeFirstOperand, secondOperand, modeSecondOperand);
                 break;
             case "FCT":
                 break;
         }
+    }
+
+    private void executeInstructionIO(NamedByte mappedInstr, short firstOperand, NamedByte modeFirstOperand, short secondOperand, NamedByte modeSecondOperand) throws CustomException {
+        var firstValue= resolveAddressing(modeFirstOperand.name, firstOperand);
+        var secondValue= resolveAddressing(modeSecondOperand.name, secondOperand);
+
+        if (firstValue== null || (secondValue == null && mappedInstr.name.equals("WRITE"))){
+            throw new CustomException("Could not resolve addressing of operands");
+        }
+        switch (mappedInstr.name){
+            case "READ":
+                // READY TO WRITE KEYBOARD.isReady = true
+                // await write
+                var charByte= memo.read(Configurator.configFR.getKeyboardBufferPage(),
+                        Configurator.configFR.getKeyboardBufferPageOffset(),
+                        Configurator.configFR.getKeyboardBufferLength())[0];
+                writeToAddress(modeFirstOperand.name, firstOperand, (short) charByte);
+                break;
+            case "WRITE":
+                memo.write(firstValue,(short) (secondValue & 0x7FFF));
+                break;
+        }
+
     }
 
     private void executeInstructionStack(NamedByte mappedInstr, short operand, NamedByte modeOperand) throws CustomException {
@@ -241,7 +267,7 @@ public class CPU {
                 }
                 register.setValue(result);
             case "INDIRECT":
-                registers.get("HX").setValue(result);
+                registers.get("HX").setValue(result);// <- relook
 
         }
     }

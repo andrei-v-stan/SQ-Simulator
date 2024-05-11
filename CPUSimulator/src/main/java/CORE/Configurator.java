@@ -13,35 +13,36 @@ public class Configurator {
     public static Memory memory;
     public static InstructionMemory instructionMemory;
 
+    public static ConfigFileReader configFR;
     public static Keyboard keyboard;
     public static Screen screen;
 
     public Configurator(String filePath) {
 
-        ConfigFileReader config = new ConfigFileReader(filePath);
-        System.out.println("pageSize: " + config.getPageSize());
-        System.out.println("nbPagesMemo: " + config.getNbPagesMemo());
-        System.out.println("nbPagesInstrMemo: " + config.getNbPagesInstrMemo());
+        configFR = new ConfigFileReader(filePath);
+        System.out.println("pageSize: " + configFR.getPageSize());
+        System.out.println("nbPagesMemo: " + configFR.getNbPagesMemo());
+        System.out.println("nbPagesInstrMemo: " + configFR.getNbPagesInstrMemo());
 
-        System.out.println("stackPageNumber: " + config.getStackPageNumber());
-        System.out.println("stackBufferPageOffset: " + config.getStackBufferPageOffset());
-        System.out.println("stackLength: " + config.getStackLength());
+        System.out.println("stackPageNumber: " + configFR.getStackPageNumber());
+        System.out.println("stackBufferPageOffset: " + configFR.getStackBufferPageOffset());
+        System.out.println("stackLength: " + configFR.getStackLength());
 
-        System.out.println("keyboardBufferPage: " + config.getKeyboardBufferPage());
-        System.out.println("keyboardBufferPageOffset: " + config.getKeyboardBufferPageOffset());
-        System.out.println("keyboardBufferLength: " + config.getKeyboardBufferLength());
+        System.out.println("keyboardBufferPage: " + configFR.getKeyboardBufferPage());
+        System.out.println("keyboardBufferPageOffset: " + configFR.getKeyboardBufferPageOffset());
+        System.out.println("keyboardBufferLength: " + configFR.getKeyboardBufferLength());
 
-        System.out.println("screenPage: " + config.getScreenPage());
-        System.out.println("screenPageOffset: " + config.getScreenPageOffset());
-        System.out.println("screenLength: " + config.getScreenLength());
-        System.out.println("screenWidth: " + config.getScreenWidth());
+        System.out.println("screenPage: " + configFR.getScreenPage());
+        System.out.println("screenPageOffset: " + configFR.getScreenPageOffset());
+        System.out.println("screenLength: " + configFR.getScreenLength());
+        System.out.println("screenWidth: " + configFR.getScreenWidth());
 
-        instructionMemory = new InstructionMemory(config.getNbPagesInstrMemo(), config.getPageSize());
-        memory = new Memory(config.getNbPagesMemo(), config.getPageSize());
+        instructionMemory = new InstructionMemory(configFR.getNbPagesInstrMemo(), configFR.getPageSize());
+        memory = new Memory(configFR.getNbPagesMemo(), configFR.getPageSize());
         var parser = new ParserImpl();
         cpu = new CPU(instructionMemory, memory, parser);
 
-        keyboard = new Keyboard(memory, config.getKeyboardBufferPage() * 4096 + config.getKeyboardBufferPageOffset());
-        screen = new Screen(memory, config.getScreenPage() * config.getPageSize() + config.getScreenPageOffset(), config.getScreenLength(), config.getScreenWidth());
+        keyboard = new Keyboard(memory, configFR.getKeyboardBufferPage() * 4096 + configFR.getKeyboardBufferPageOffset());
+        screen = new Screen(memory, configFR.getScreenPage() * configFR.getPageSize() + configFR.getScreenPageOffset(), configFR.getScreenLength(), configFR.getScreenWidth());
     }
 }
