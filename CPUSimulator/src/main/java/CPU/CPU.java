@@ -43,15 +43,16 @@ public class CPU {
 
     public void execute(int programOffset, int instructionCount) throws CustomException {
 
-
-        for (int currentInstruction=0; currentInstruction<= instructionCount; currentInstruction++){
-            registers.get("PC").setValue((short) (currentInstruction + programOffset));
+        int currentInstruction=0;
+        while ( currentInstruction<= instructionCount){
+            registers.get("PC").setValue((short) (currentInstruction + programOffset + 1));
             var rawInstruction = instructionMemory.readInstruction(currentInstruction + programOffset);
             try {
                 prepareInstruction(rawInstruction);
             }catch (Exception e){
                 throw new CustomException(String.format("Error at line  %d\n%s",currentInstruction, e.getMessage()));
             }
+            currentInstruction= registers.get("PC").getValue();
         }
 
     }
