@@ -102,8 +102,8 @@ public class Convertor {
     public static byte[] getBytesFromShort(String operand) {
         var result = new byte[2];
         var value = Short.parseShort(operand);
-        result[0] = (byte) (value & 0xFF);
-        result[1] = (byte) ((value >> 8) & 0xFF);
+        result[0] = (byte) ((value >> 8) & 0xFF);
+        result[1] = (byte) (value & 0xFF);
 
         return result;
     }
@@ -111,8 +111,8 @@ public class Convertor {
     public static byte[] getBytesFromChar(String operand) {
         var result = new byte[2];
         var value = operand.charAt(1);
-        result[0] = (byte) (value & 0xFF);
-        result[1] = (byte) ((value >> 8) & 0xFF);
+        result[0] = (byte) ((value >> 8) & 0xFF);
+        result[1] = (byte) (value & 0xFF);
 
         return result;
     }
@@ -120,8 +120,8 @@ public class Convertor {
     public static byte[] getBytesFromHex(String operand) {
         var result = new byte[2];
         var value = Short.parseShort(operand, 16);
-        result[0] = (byte) (value & 0xFF);
-        result[1] = (byte) ((value >> 8) & 0xFF);
+        result[0] = (byte) ((value >> 8) & 0xFF);
+        result[1] = (byte) (value & 0xFF);
 
         return result;
     }
@@ -129,8 +129,8 @@ public class Convertor {
     public static byte[] getBytesFromRegister(String operand) {
         var result = new byte[2];
         var value = registerCodes.get(operand.toUpperCase());
-        result[0] = (byte) (value & 0xFF);
-        result[1] = (byte) ((value >> 8) & 0xFF);
+        result[0] = (byte) ((value >> 8) & 0xFF);
+        result[1] = (byte) (value & 0xFF);
 
         return result;
     }
@@ -140,13 +140,13 @@ public class Convertor {
         var addr = operand.substring(1, operand.length() - 1);
         if (isShortConst(operand)) {
             var value = Short.parseShort(addr);
-            result[0] = (byte) (value & 0xFF);
-            result[1] = (byte) ((value >> 8) & 0xFF);
+            result[0] = (byte) ((value >> 8) & 0xFF);
+            result[1] = (byte) (value & 0xFF);
         }
         else {
             var value = Short.parseShort(addr, 16);
-            result[0] = (byte) (value & 0xFF);
-            result[1] = (byte) ((value >> 8) & 0xFF);
+            result[0] = (byte) ((value >> 8) & 0xFF);
+            result[1] = (byte) (value & 0xFF);
         }
 
         return result;
@@ -156,8 +156,8 @@ public class Convertor {
         var result = new byte[2];
         var register = operand.substring(1, operand.length() - 1);
         var value = registerCodes.get(register);
-        result[0] = (byte) (value & 0xFF);
-        result[1] = (byte) ((value >> 8) & 0xFF);
+        result[0] = (byte) ((value >> 8) & 0xFF);
+        result[1] = (byte) (value & 0xFF);
 
         return result;
     }

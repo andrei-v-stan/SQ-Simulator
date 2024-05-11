@@ -32,12 +32,11 @@ public class InstructionMemory {
         if (instructionCount >= maxPages * maxInstructionCountOnPage) //No more space to write
             return;
 
-        instructionCount+=1;
-
         int page= instructionCount / maxInstructionCountOnPage;
         int startCopy = instructionCount % maxInstructionCountOnPage * maxInstructionSize;
         System.arraycopy(instruction,0, pages[page].getData(), startCopy, maxInstructionSize);
 
+        instructionCount+=1;
     }
     public byte[] readInstruction(int instructionNb){
 

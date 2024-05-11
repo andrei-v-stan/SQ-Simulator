@@ -69,12 +69,11 @@ public class CPU {
         short firstOperand = (short) (((rawInstruction[2] & 0xFF) << 8) | (rawInstruction[3] & 0xFF));
 
         byte secondOperandSpec= rawInstruction[4];
-        short secondOperand = (secondOperandSpec == 0) ? (short) (((rawInstruction[5] & 0xFF) << 8) | (rawInstruction[6] & 0xFF)) : 0;
-
+        short secondOperand = (secondOperandSpec != 0) ? (short) (((rawInstruction[5] & 0xFF) << 8) | (rawInstruction[6] & 0xFF)) : 0;
 
         var mappedInstr= InstructionSet.searchByCode(operator);
         var modeFirstOperand= AddressingModes.searchByCode(firstOperandSpec);
-        var modeSecondOperand= (secondOperandSpec == 0) ? AddressingModes.searchByCode(secondOperandSpec) : null;
+        var modeSecondOperand= (secondOperandSpec != 0) ? AddressingModes.searchByCode(secondOperandSpec) : null;
 
         if (mappedInstr == null){
             throw new CustomException("Could not find Instruction in instruction set");
