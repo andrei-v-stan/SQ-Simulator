@@ -28,14 +28,14 @@ public class Keyboard implements Runnable
     }
 
     public void write(char key) {
-        buffer.add((byte) key);
+        //buffer.add((byte) key);
         /*
         *
-        * */
+        *
         var bytes= new byte[1];
         bytes[0]= (byte)key;
         memory.write(Configurator.configFR.getKeyboardBufferPage(),
-                Configurator.configFR.getScreenPageOffset(), bytes);
+                Configurator.configFR.getScreenPageOffset(), 8, bytes);*/
 
     }
     @Override

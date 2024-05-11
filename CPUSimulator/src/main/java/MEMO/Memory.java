@@ -1,5 +1,7 @@
 package MEMO;
 
+import java.util.Arrays;
+
 public class Memory {
     private MemoryPage[] pages; // Array to hold pages
     private int pageSize; // Size of each page
@@ -23,10 +25,8 @@ public class Memory {
 
     // Method to read data from memory
     public byte[] read(int pageNumber, int offset, int length) {
-        // Check if the page is in memory, handle page faults if needed
-        // Read data from the page
-        // Return the data
-        return null;
+        pages[pageNumber].getData()[]
+        return Arrays.copyOfRange(pages[pageNumber].getData(), offset, length);
     }
     public void write(short location, short data){
         var byteArray = new byte[2];
@@ -34,12 +34,11 @@ public class Memory {
         byteArray[0] = (byte) ((data >> 8) & 0xFF);
         byteArray[1] = (byte) (data & 0xFF);
 
-        write((int)(location)/pageSize, (int)(location)%pageSize, byteArray);
+        write((int)(location)/pageSize, (int)(location)%pageSize,16, byteArray);
     }
     // Method to write data to memory
-    public void write(int pageNumber, int offset, byte[] data) {
-        // Check if the page is in memory, handle page faults if needed
-        // Write data to the page
+    public void write(int pageNumber, int offset,int length, byte[] data) {
+        System.arraycopy(data,0, pages[pageNumber].getData(), offset, length);
     }
 
 
