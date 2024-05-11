@@ -1,103 +1,51 @@
 package CPU.parser;
 
-import java.util.ArrayList;
-import java.util.List;
+import CPU.Info.InstructionSet;
+import MEMO.InstructionMemory;
+import UTILS.CustomException;
 
 public class ParserImpl implements Parser {
-    private static int currentIndex = 0;
-    private static List<String> tokens;
 
     @Override
-    public ASTNode parse(String sourceCode) {
-        tokens = tokenize(sourceCode);
-        currentIndex = 0;
-        return parseProgram();
+    public void loadInstructionMemory(InstructionMemory instructionMemory, String sourceCode) throws CustomException {
+        var code = parse(sourceCode);
+        for (var statement : code.statements) {
+            var bytes = code.toBytes(statement);
+            instructionMemory.writeInstruction(bytes);
+        }
     }
 
-    private static List<String> tokenize(String sourceCode) {
-        return getTokens(sourceCode);
+    private Code parse(String sourceCode) throws CustomException {
+        var lines = sourceCode.split("\n");
+        var code = new Code();
+        int lineNumber = 0;
+
+        for (var line : lines) {
+            var rawInstruction = getRawInstruction(line, lineNumber);
+            code.addRawInstruction(rawInstruction);
+            lineNumber++;
+        }
+
+        return code;
     }
 
-    static List<String> getTokens(String sourceCode) {
-        List<String> tokens = new ArrayList<>();
-        StringBuilder currentToken = new StringBuilder();
+    private Statement getRawInstruction(String line, int lineNumber) throws CustomException {
+        var tokens = line.split("\\s+");
+        if (tokens.length > 3 || tokens.length < 1) {
+            throw new CustomException("Invalid instruction syntax, line: " + lineNumber);
+        }
 
-        for (char c : sourceCode.toCharArray()) {
-            if (Character.isWhitespace(c)) {
-                if (!currentToken.isEmpty()) {
-                    tokens.add(currentToken.toString());
-                    currentToken.setLength(0);
-                }
-            } else if (c == ',' || c == '\n' || c == ':') {
-                if (!currentToken.isEmpty()) {
-                    tokens.add(currentToken.toString());
-                    currentToken.setLength(0);
-                }
-                tokens.add(String.valueOf(c));
-            } else {
-                currentToken.append(c);
+        var operation = tokens[0].toUpperCase();
+        String operand1 = null, operand2 = null;
+
+        if (tokens.length >= 2) {
+            operand1 = tokens[1];
+            if (tokens.length == 3) {
+                operand2 = tokens[2];
+                operand1 = operand1.replaceAll(",$", "");
             }
         }
 
-        if (!currentToken.isEmpty()) {
-            tokens.add(currentToken.toString());
-        }
-
-        return tokens;
-    }
-
-    private static String getNextToken() {
-        if (currentIndex < tokens.size()) {
-            return tokens.get(currentIndex++);
-        }
-        return null;
-    }
-
-    private static String peekNextToken() {
-        if (currentIndex < tokens.size()) {
-            return tokens.get(currentIndex);
-        }
-        return null;
-    }
-
-    private static ASTNode parseProgram() {
-        ASTNode programNode = new ASTNode("Program", null, null);
-
-        while (peekNextToken() != null) {
-            programNode.addChild(parseLine());
-        }
-
-        return programNode;
-    }
-
-    private static ASTNode parseLine() {
-        String instruction = getNextToken();
-        String operand1 = null;
-        String operand2 = null;
-
-        if (peekNextToken() != null && peekNextToken().equals(":")) {
-            getNextToken();
-        } else {
-            operand1 = getNextToken();
-            if (peekNextToken() != null && peekNextToken().equals(",")) {
-                getNextToken();
-                operand2 = getNextToken();
-            }
-        }
-
-        return new ASTNode(instruction, operand1, operand2);
-    }
-
-    public static void main(String[] args) {
-        String sourceCode = "MOV AX, 10\n" +
-                "ADD AX, BX\n" +
-                "SUB CX, 5\n" +
-                "JMP _start\n" +
-                "start:\n" +
-                "CALL _start\n";
-
-        var parser = new ParserImpl();
-        ASTNode ast = parser.parse(sourceCode);
-        System.out.println(ast);
+        return new Statement(operation, operand1, operand2);
     }
 }

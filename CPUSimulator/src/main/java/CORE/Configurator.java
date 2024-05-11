@@ -1,5 +1,6 @@
 package CORE;
 
+import CPU.parser.ParserImpl;
 import MEMO.InstructionMemory;
 import CPU.CPU;
 import MEMO.Memory;
@@ -37,7 +38,8 @@ public class Configurator {
 
         instructionMemory = new InstructionMemory(config.getNbPagesInstrMemo(), config.getPageSize());
         memory = new Memory(config.getNbPagesMemo(), config.getPageSize());
-        cpu = new CPU(instructionMemory, memory);
+        var parser = new ParserImpl();
+        cpu = new CPU(instructionMemory, memory, parser);
 
         keyboard = new Keyboard(memory, config.getKeyboardBufferPage() * 4096 + config.getKeyboardBufferPageOffset());
         screen = new Screen(memory, config.getScreenPage() * config.getPageSize() + config.getScreenPageOffset(), config.getScreenLength(), config.getScreenWidth());

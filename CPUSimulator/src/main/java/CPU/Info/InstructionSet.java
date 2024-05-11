@@ -49,7 +49,12 @@ public class InstructionSet {
             if (instr.opcode == lookup)
                 return instr;
         return null;
-
     }
 
+    public static NamedByte searchByName(String name) {
+        for(var instr : instructions)
+            if (instr.name.equals(name))
+                return instr;
+        return null;
+    }
 }

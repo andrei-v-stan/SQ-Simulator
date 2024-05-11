@@ -52,6 +52,4 @@ public class InstructionMemory {
         return instruction;
     }
 
-
-
 }

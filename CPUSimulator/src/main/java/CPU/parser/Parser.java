@@ -1,5 +1,8 @@
 package CPU.parser;
 
+import MEMO.InstructionMemory;
+import UTILS.CustomException;
+
 public interface Parser {
-    ASTNode parse(String sourceCode);
+    void loadInstructionMemory(InstructionMemory instructionMemory, String sourceCode) throws CustomException;
 }

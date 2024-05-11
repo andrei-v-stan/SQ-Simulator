@@ -2,9 +2,10 @@ package CPU;
 import CPU.Info.AddressingModes;
 import CPU.Info.InstructionSet;
 import CPU.Info.NamedByte;
+import CPU.parser.Parser;
 import MEMO.InstructionMemory;
 import MEMO.Memory;
-import MEMO.MemoryManger;
+import MEMO.MemoryManager;
 import UTILS.CustomException;
 
 import  java.util.*;
@@ -12,17 +13,19 @@ public class CPU {
     public HashMap<String, Register> registers;
     private InstructionMemory instructionMemory;
     private Memory memo;
+    private Parser parser;
 
     private boolean EF, CF, OF, SF, PF;
 
-    public CPU(InstructionMemory instructionMemory, Memory memo) {
+    public CPU(InstructionMemory instructionMemory, Memory memo, Parser parser) {
         this.instructionMemory = instructionMemory;
         this.memo = memo;
+        this.parser = parser;
         Initialize();
     }
 
     private void Initialize(){
-        registers= new HashMap<String, Register>();
+        registers = new HashMap<String, Register>();
         registers.put("AX", new Register((byte) 0b00000001));
         registers.put("BX", new Register((byte) 0b00000010));
         registers.put("CX", new Register((byte) 0b00000011));
@@ -36,7 +39,7 @@ public class CPU {
         registers.put("PC", new Register((byte) 0b00001010));
     }
 
-    private void execute(int programOffset, int instructionCount) throws CustomException {
+    public void execute(int programOffset, int instructionCount) throws CustomException {
 
 
         for (int currentInstruction=0; currentInstruction<= instructionCount; currentInstruction++){
@@ -51,6 +54,10 @@ public class CPU {
 
     }
     // in the future execute with breakpoints
+
+    public void loadInstructionMemory(String sourceCode) throws CustomException {
+        parser.loadInstructionMemory(instructionMemory, sourceCode);
+    }
 
     private void prepareInstruction(byte[] rawInstruction) throws CustomException {
         byte operator = rawInstruction[0];
@@ -114,7 +121,7 @@ public class CPU {
         var sp= registers.get("SP");
         switch (mappedInstr.name){
             case "PUSH":
-                if (MemoryManger.isLocationUsed((short) (sp.getValue()+16), 16)){
+                if (MemoryManager.isLocationUsed((short) (sp.getValue()+16), 16)){
                     throw new CustomException("Stack Overflow");
                 }
                 memo.write(sp.getValue(), operand);
@@ -122,7 +129,7 @@ public class CPU {
 
                 break;
             case "POP":
-                if (MemoryManger.isLocationUsed((short) (sp.getValue()-16), 16)){
+                if (MemoryManager.isLocationUsed((short) (sp.getValue()-16), 16)){
                     throw new CustomException("Stack Underflow");
                 }
                 writeToAddress(modeOperand.name, operand, memo.read(sp.getValue(), 16));

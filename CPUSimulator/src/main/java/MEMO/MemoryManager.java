@@ -2,7 +2,7 @@ package MEMO;
 
 import java.util.List;
 
-public class MemoryManger {
+public class MemoryManager {
 
     public static class MemoryLocation{
         public String usedBy;
