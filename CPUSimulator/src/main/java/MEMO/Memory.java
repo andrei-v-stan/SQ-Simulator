@@ -11,7 +11,7 @@ public class Memory {
         }
     }
     private void Initialize(){
-        
+
 
     }
     public Short read(short location, int length){
