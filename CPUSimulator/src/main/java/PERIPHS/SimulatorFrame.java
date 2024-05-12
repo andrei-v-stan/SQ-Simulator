@@ -62,7 +62,7 @@ public class SimulatorFrame {
         screenLabel.setForeground(Color.WHITE);
         screenOutputPanel.add(screenLabel, BorderLayout.NORTH);
         JScrollPane screenScrollPane = new JScrollPane(screenOutput);
-        screenScrollPane.setPreferredSize(new Dimension(screen.getWidth(), screen.getLength()));
+        screenScrollPane.setPreferredSize(new Dimension(600, 800));
         screenOutputPanel.add(screenScrollPane, BorderLayout.CENTER);
         screenOutputPanel.setBackground(Color.BLACK);
         screenOutputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

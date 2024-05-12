@@ -178,7 +178,7 @@ public class CPU {
                 writeToAddress(modeFirstOperand.name, firstOperand, (short) charByte);
                 break;
             case "WRITE":
-                memo.write(firstValue,(short) (secondValue & 0x7FFF));
+                memo.write(firstValue,(short) (secondValue & 0x7FFF), 1);
                 break;
         }
 

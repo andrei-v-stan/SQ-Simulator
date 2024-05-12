@@ -33,7 +33,14 @@ public class Memory {
         byteArray[0] = (byte) ((data >> 8) & 0xFF);
         byteArray[1] = (byte) (data & 0xFF);
 
-        write((int)(location)/pageSize, (int)(location)%pageSize,16, byteArray);
+        write((int)(location)/pageSize, (int)(location)%pageSize,2, byteArray);
+    }
+    public void write(short location, short data, int length){
+        var byteArray = new byte[1];
+
+        byteArray[0] = (byte) (data & 0xFF);
+
+        write((int)(location)/pageSize, (int)(location)%pageSize, length, byteArray);
     }
     // Method to write data to memory
     public void write(int pageNumber, int offset,int length, byte[] data) {

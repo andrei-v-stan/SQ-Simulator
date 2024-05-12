@@ -62,6 +62,6 @@ public class InstructionSet {
                 || instr.category.equals("STACK") || instr.name.equals("READ");
     }
     public static boolean isImmediateOp(NamedByte instr){
-        return instr.category.equals("JUMP") || instr.category.equals("FCT");//possible read to
+        return instr.category.equals("JUMP") || instr.category.equals("FCT") || instr.category.equals("IO");
     }
 }
