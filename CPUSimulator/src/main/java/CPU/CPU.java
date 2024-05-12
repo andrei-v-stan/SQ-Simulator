@@ -9,6 +9,7 @@ import MEMO.InstructionMemory;
 import MEMO.Memory;
 import MEMO.MemoryManager;
 import UTILS.CustomException;
+import UTILS.SyncHelper;
 
 import  java.util.*;
 public class CPU {
@@ -168,6 +169,9 @@ public class CPU {
             case "READ":
                 // READY TO WRITE KEYBOARD.isReady = true
                 // await write
+                SyncHelper.notifyThread();
+                SyncHelper.waitForNotification();
+
                 var charByte= memo.read(Configurator.configFR.getKeyboardBufferPage(),
                         Configurator.configFR.getKeyboardBufferPageOffset(),
                         Configurator.configFR.getKeyboardBufferLength())[0];

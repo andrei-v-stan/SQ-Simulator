@@ -37,6 +37,9 @@ public class Screen implements Runnable{
 
         var bytes= memory.read(Configurator.configFR.getScreenPage(), Configurator.configFR.getScreenPageOffset(),
                 Configurator.configFR.getScreenLength() * Configurator.configFR.getScreenWidth());
+         from short read least significant byte (maybe conversion to byte not sure)
+         write to string
+         maybe use stringBuilder
         new String(bytes);
          */
     }

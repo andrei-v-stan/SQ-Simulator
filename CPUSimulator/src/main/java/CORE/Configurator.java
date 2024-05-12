@@ -42,7 +42,7 @@ public class Configurator {
         var parser = new ParserImpl();
         cpu = new CPU(instructionMemory, memory, parser);
 
-        keyboard = new Keyboard(memory, configFR.getKeyboardBufferPage() * 4096 + configFR.getKeyboardBufferPageOffset());
+        keyboard = new Keyboard(memory);
         screen = new Screen(memory, configFR.getScreenPage() * configFR.getPageSize() + configFR.getScreenPageOffset(), configFR.getScreenLength(), configFR.getScreenWidth());
     }
 }

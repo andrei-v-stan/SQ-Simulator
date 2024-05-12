@@ -25,7 +25,6 @@ public class Memory {
 
     // Method to read data from memory
     public byte[] read(int pageNumber, int offset, int length) {
-        pages[pageNumber].getData()[]
         return Arrays.copyOfRange(pages[pageNumber].getData(), offset, length);
     }
     public void write(short location, short data){
