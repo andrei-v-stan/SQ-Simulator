@@ -1,0 +1,2 @@
+mov ax, 10
+and ax, 12
