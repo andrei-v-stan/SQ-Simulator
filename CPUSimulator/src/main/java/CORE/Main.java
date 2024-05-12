@@ -8,8 +8,13 @@ import UTILS.CustomException;
 public class Main {
 
     public static void main(String[] args) throws CustomException {
-        Configurator configurator = new Configurator("CPUSimulator/src/main/resources/config.properties");
-        //PERIPHS.SimulatorFrame simulatorFrame = new PERIPHS.SimulatorFrame();
+        Configurator configurator = new Configurator("./CPUSimulator/src/main/resources/config.properties");
+       /* PERIPHS.SimulatorFrame simulatorFrame = new PERIPHS.SimulatorFrame();
+
+        var keyboardThread= new Thread(Configurator.keyboard);
+        var screenThread= new Thread(Configurator.screen);
+        keyboardThread.start();
+        screenThread.start();*/
 
         var source = """
                 mov ax, 10

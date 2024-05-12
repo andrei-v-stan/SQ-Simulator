@@ -10,6 +10,7 @@ import java.io.PrintStream;
 
 public class SimulatorFrame {
 
+    public static JTextArea screenOutput;
     public SimulatorFrame() {
         Keyboard keyboard = Configurator.keyboard;
         Screen screen = Configurator.screen;
@@ -17,21 +18,22 @@ public class SimulatorFrame {
         JFrame frame = new JFrame("CPU Simulator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JTextArea screenOutput = new JTextArea();
+        screenOutput = new JTextArea();
         screenOutput.setEditable(false);
 
         JTextArea keyboardInput = new JTextArea();
         keyboardInput.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                char key = e.getKeyChar();
+                keyboard.setInput(keyboardInput.getText());
+               /* char key = e.getKeyChar();
                 keyboard.write(key);
                 System.out.println("Read from keyboard: " + key);
                 if (key == '\n') {
                     String text = keyboardInput.getText();
                     screenOutput.setText(screenOutput.getText() + text);
                     keyboardInput.setText("");
-                }
+                }*/
             }
         });
         /*
