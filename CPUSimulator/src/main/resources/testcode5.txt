@@ -1,0 +1,11 @@
+mov ax, 1
+mov bx, 5
+shl ax, 1
+sub bx, 1
+cmp bx, 0
+jne 2
+ret
+mov ax, 1
+write 2048, ax
+call 0
+write 2049, ax

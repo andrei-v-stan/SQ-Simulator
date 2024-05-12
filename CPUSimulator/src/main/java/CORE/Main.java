@@ -5,10 +5,13 @@ import MEMO.InstructionMemory;
 import PERIPHS.Screen;
 import UTILS.CustomException;
 
+import static UTILS.AssemblyFileReader.readAssemblyFromFile;
+
 public class Main {
 
     public static void main(String[] args) throws CustomException {
-        Configurator configurator = new Configurator("D:/facultateM/CSS/SQ-Simulator/CPUSimulator/src/main/resources/config.properties");
+        var resourcesPath = "CPUSimulator/src/main/resources/";
+        Configurator configurator = new Configurator(resourcesPath + "config.properties");
         PERIPHS.SimulatorFrame simulatorFrame = new PERIPHS.SimulatorFrame();
 
         var keyboardThread= new Thread(Configurator.keyboard);
@@ -16,19 +19,9 @@ public class Main {
         keyboardThread.start();
         screenThread.start();
 
-        var source = """
-                mov ax, 1
-                mov bx, 5
-                shl ax, 1
-                sub bx, 1
-                cmp bx, 0
-                jne 2
-                ret
-                mov ax, 1
-                write 2048, ax
-                call 0
-                write 2049, ax
-                """;
+        var source = readAssemblyFromFile(resourcesPath + "testcode5.txt");
+
+        System.out.println(source);
 
         Configurator.cpu.loadInstructionMemory(source);
         Configurator.cpu.execute(7, 11);

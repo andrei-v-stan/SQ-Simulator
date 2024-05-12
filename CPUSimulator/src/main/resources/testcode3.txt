@@ -1,0 +1,6 @@
+mov ax, 10
+add ax, 23
+mov bx, 'B'
+sub bx, ax
+cmp bx, ax
+je 3

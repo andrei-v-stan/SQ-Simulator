@@ -1,0 +1,3 @@
+mov ax, 2048
+write ax, 'B'
+write 2049, 'C'
