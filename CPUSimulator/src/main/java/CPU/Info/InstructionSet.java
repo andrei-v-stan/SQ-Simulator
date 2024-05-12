@@ -42,7 +42,7 @@ public class InstructionSet {
         instructions.add(new NamedByte("READ", "IO", (byte) 0b00010110));
         instructions.add(new NamedByte("WRITE", "IO",(byte) 0b00010111));
         instructions.add(new NamedByte("CALL", "FCT", (byte) 0b00011000));
-        instructions.add(new NamedByte("RET", "FCT",(byte) 0b00011001));// does parser need it?
+        instructions.add(new NamedByte("RET", "FCT",(byte) 0b00011001));// does parser need it? yes it does:)
     }
     public static NamedByte searchByCode(byte lookup){
         for(var instr : instructions)
@@ -56,5 +56,12 @@ public class InstructionSet {
             if (instr.name.equals(name))
                 return instr;
         return null;
+    }
+    public static boolean isUnaryOp(NamedByte instr){
+        return instr.category.equals("JUMP") || instr.category.equals("FCT")
+                || instr.category.equals("STACK") || instr.name.equals("READ");
+    }
+    public static boolean isImmediateOp(NamedByte instr){
+        return instr.category.equals("JUMP") || instr.category.equals("FCT");//possible read to
     }
 }

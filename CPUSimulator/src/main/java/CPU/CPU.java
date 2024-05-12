@@ -45,7 +45,7 @@ public class CPU {
     public void execute(int programOffset, int instructionCount) throws CustomException {
 
         int currentInstruction=0;
-        while ( currentInstruction<= instructionCount){
+        while (currentInstruction < instructionCount){
             registers.get("PC").setValue((short) (currentInstruction + programOffset + 1));
             var rawInstruction = instructionMemory.readInstruction(currentInstruction + programOffset);
             try {
@@ -83,11 +83,11 @@ public class CPU {
             throw new CustomException("Could not find Instruction in instruction set");
         }
 
-        if ( modeFirstOperand == null || modeSecondOperand == null){
+        if ( modeFirstOperand == null || (modeSecondOperand == null && !InstructionSet.isUnaryOp(mappedInstr))){
             throw  new CustomException("Operand mode not recognized");
         }
 
-        if( modeFirstOperand.name.equals("IMMEDIATE")){
+        if( modeFirstOperand.name.equals("IMMEDIATE") && !InstructionSet.isImmediateOp(mappedInstr) ){
             throw new CustomException("First operand addressing mode can not be immediate");
         }
         switch (mappedInstr.category){
@@ -254,7 +254,7 @@ public class CPU {
             default -> 0;
         };
 
-        writeToAddress(mappedInstr.name, firstOperand, result);
+        writeToAddress(modeFirstOperand.name, firstOperand, result);
 
     }
 
@@ -274,7 +274,7 @@ public class CPU {
             default -> 0;
         };
 
-        writeToAddress(mappedInstr.name, firstOperand, result);
+        writeToAddress(modeFirstOperand.name, firstOperand, result);
     }
 
     private void executeInstructionArithmetic(NamedByte mappedInstr, short firstOperand, short secondOperand, NamedByte modeFirstOperand, NamedByte modeSecondOperand) throws CustomException {
@@ -299,7 +299,7 @@ public class CPU {
         };
 
         updateFlagsForArithmetic(firstValue, secondValue, result);
-        writeToAddress(mappedInstr.name, firstOperand, result);
+        writeToAddress(modeFirstOperand.name, firstOperand, result);
     }
     private  void writeToAddress(String mode, short location, short result) throws CustomException{
         switch (mode){

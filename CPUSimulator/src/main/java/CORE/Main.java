@@ -8,7 +8,7 @@ import UTILS.CustomException;
 public class Main {
 
     public static void main(String[] args) throws CustomException {
-        Configurator configurator = new Configurator("./CPUSimulator/src/main/resources/config.properties");
+        Configurator configurator = new Configurator("D:/facultateM/CSS/SQ-Simulator/CPUSimulator/src/main/resources/config.properties");
        /* PERIPHS.SimulatorFrame simulatorFrame = new PERIPHS.SimulatorFrame();
 
         var keyboardThread= new Thread(Configurator.keyboard);
@@ -26,7 +26,7 @@ public class Main {
                 """;
 
         Configurator.cpu.loadInstructionMemory(source);
-        Configurator.cpu.execute(0, 0);
+        Configurator.cpu.execute(0, 6);
         Configurator.cpu.registers.values().forEach(x->{System.out.println(x.toString());});
     }
 }
