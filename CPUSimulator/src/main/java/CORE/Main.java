@@ -24,7 +24,9 @@ public class Main {
                 cmp bx, ax
                 je 3
                 """;
+
         Configurator.cpu.loadInstructionMemory(source);
         Configurator.cpu.execute(0, 0);
+        Configurator.cpu.registers.values().forEach(x->{System.out.println(x.toString());});
     }
 }

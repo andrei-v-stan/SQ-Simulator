@@ -372,6 +372,8 @@ public class CPU {
         sp.setValue((short) (sp.getValue()-16));
         return buff;
     }
-
+    public Register registers(String register){
+        return registers.get(register);
+    }
 }
 

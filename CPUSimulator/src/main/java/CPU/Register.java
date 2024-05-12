@@ -27,4 +27,12 @@ public class Register {
     public void setRegisterCode(byte registerCode) {
         this.registerCode = registerCode;
     }
+
+    @Override
+    public String toString() {
+        return "Register{" +
+                "value=" + value +
+                ", registerCode=" + registerCode +
+                '}';
+    }
 }
