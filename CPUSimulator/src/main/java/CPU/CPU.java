@@ -160,13 +160,14 @@ public class CPU {
 
     private void executeInstructionIO(NamedByte mappedInstr, short firstOperand, NamedByte modeFirstOperand, short secondOperand, NamedByte modeSecondOperand) throws CustomException {
         var firstValue= resolveAddressing(modeFirstOperand.name, firstOperand);
-        var secondValue= resolveAddressing(modeSecondOperand.name, secondOperand);
 
-        if (firstValue== null || (secondValue == null && mappedInstr.name.equals("WRITE"))){
+        if (firstValue== null){
             throw new CustomException("Could not resolve addressing of operands");
         }
+
         switch (mappedInstr.name){
             case "READ":
+
                 // READY TO WRITE KEYBOARD.isReady = true
                 // await write
                 SyncHelper.notifyThread();
@@ -178,6 +179,11 @@ public class CPU {
                 writeToAddress(modeFirstOperand.name, firstOperand, (short) charByte);
                 break;
             case "WRITE":
+                var secondValue= resolveAddressing(modeSecondOperand.name, secondOperand);
+
+                if (secondValue == null){
+                    throw new CustomException("Could not resolve addressing of operands");
+                }
                 memo.write(firstValue,(short) (secondValue & 0x7FFF), 1);
                 break;
         }

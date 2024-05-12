@@ -20,7 +20,7 @@ public class Main {
         keyboardThread.start();
         screenThread.start();
 
-        var source = readAssemblyFromFile(resourcesPath + "testcode5.txt");
+        var source = readAssemblyFromFile(resourcesPath + "testcode6.txt");
         System.out.println(source);
 
         int count = countInstructions(source);
@@ -28,11 +28,7 @@ public class Main {
 
         Configurator.cpu.loadInstructionMemory(source);
 
-        Configurator.cpu.execute(9, count);
+        Configurator.cpu.execute(0, count);// offset 9 for testcode 5
         Configurator.cpu.registers.entrySet().forEach(x->{System.out.println(x.getKey() + " " + x.getValue().toString());});
-        /*System.out.println(
-        Configurator.memory.read(Configurator.configFR.getScreenPage(),0,
-                Configurator.configFR.getScreenLength()* Configurator.configFR.getScreenWidth())[1]
-        );*/
     }
 }

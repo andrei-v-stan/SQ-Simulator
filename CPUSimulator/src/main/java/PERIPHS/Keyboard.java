@@ -42,16 +42,33 @@ public class Keyboard implements Runnable
     @Override
     public void run() {
 
-     while (true){
-         synchronized (SyncHelper.monitor) {
-             // Wait for notification
-             SyncHelper.waitForNotification();
-             // Write character to memory
-             write(input.charAt(currenCharIndex));
-             currenCharIndex++;
-         }
-         if (currenCharIndex > input.length())
-             break;
-     }
+        while (true) {
+            if(input == null){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else {
+                System.out.println(input);
+                synchronized (SyncHelper.monitor) {
+                    // Check if all characters are written
+                    if (currenCharIndex >= input.length()) {
+                        break;
+                    }
+
+                    // Write character to memory
+                    write(input.charAt(currenCharIndex));
+                    currenCharIndex++;
+
+                    // Notify after writing
+                    SyncHelper.notifyThread();
+                }
+                SyncHelper.waitForNotification();
+            }
+            // Wait for notification before proceeding
+
+        }
     }
 }

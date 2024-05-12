@@ -1,0 +1,3 @@
+read ax
+add ax, 2
+write 2048, ax
