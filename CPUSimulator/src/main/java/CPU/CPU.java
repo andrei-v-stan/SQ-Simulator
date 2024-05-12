@@ -44,10 +44,10 @@ public class CPU {
 
     public void execute(int programOffset, int instructionCount) throws CustomException {
 
-        int currentInstruction=0;
+        int currentInstruction= programOffset;
         while (currentInstruction < instructionCount){
-            registers.get("PC").setValue((short) (currentInstruction + programOffset + 1));
-            var rawInstruction = instructionMemory.readInstruction(currentInstruction + programOffset);
+            registers.get("PC").setValue((short) (currentInstruction+ 1));
+            var rawInstruction = instructionMemory.readInstruction(currentInstruction );
             try {
                 prepareInstruction(rawInstruction);
             }catch (Exception e){
@@ -83,11 +83,11 @@ public class CPU {
             throw new CustomException("Could not find Instruction in instruction set");
         }
 
-        if ( modeFirstOperand == null || (modeSecondOperand == null && !InstructionSet.isUnaryOp(mappedInstr))){
+        if ( !mappedInstr.name.equals("RET") && (modeFirstOperand == null || (modeSecondOperand == null && !InstructionSet.isUnaryOp(mappedInstr)))){
             throw  new CustomException("Operand mode not recognized");
         }
 
-        if( modeFirstOperand.name.equals("IMMEDIATE") && !InstructionSet.isImmediateOp(mappedInstr) ){
+        if( !mappedInstr.name.equals("RET") && (modeFirstOperand.name.equals("IMMEDIATE") && !InstructionSet.isImmediateOp(mappedInstr) )){
             throw new CustomException("First operand addressing mode can not be immediate");
         }
         switch (mappedInstr.category){
@@ -119,14 +119,14 @@ public class CPU {
     }
 
     private void executeInstructionFct(NamedByte mappedInstr, short operand, NamedByte modeOperand) throws CustomException {
-        var firstValue= resolveAddressing(modeOperand.name, operand);
-
-        if(firstValue == null){
-            throw new CustomException("Could not resolve addressing of operands");
-        }
 
         switch (mappedInstr.name){
             case "CALL":
+                var firstValue= resolveAddressing(modeOperand.name, operand);
+
+                if(firstValue == null){
+                    throw new CustomException("Could not resolve addressing of operands");
+                }
 
                 writeToStack(registers.get("AX").getValue());
                 writeToStack(registers.get("BX").getValue());
@@ -368,7 +368,7 @@ public class CPU {
     }
     private short readFromStack() {
         var sp= registers.get("SP");
-        var buff= memo.read(sp.getValue(),16);
+        var buff= memo.read(sp.getValue(),2);
         sp.setValue((short) (sp.getValue()-16));
         return buff;
     }
