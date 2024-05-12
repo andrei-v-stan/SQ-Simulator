@@ -11,7 +11,8 @@ import static UTILS.AssemblyInstructionCounter.countInstructions;
 public class Main {
 
     public static void main(String[] args) throws CustomException {
-        var resourcesPath = "D:/facultateM/CSS/SQ-Simulator/CPUSimulator/src/main/resources/";
+        //var resourcesPath = "D:/facultateM/CSS/SQ-Simulator/CPUSimulator/src/main/resources/";
+        var resourcesPath = "/CPUSimulator/src/main/resources/";
         Configurator configurator = new Configurator(resourcesPath + "config.properties");
         PERIPHS.SimulatorFrame simulatorFrame = new PERIPHS.SimulatorFrame();
 
