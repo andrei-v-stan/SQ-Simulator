@@ -364,12 +364,12 @@ public class CPU {
     private void writeToStack(short data){
         var sp= registers.get("SP");
         memo.write(sp.getValue(),data);
-        sp.setValue((short) (sp.getValue()+16));
+        sp.setValue((short) (sp.getValue()+2));
     }
     private short readFromStack() {
         var sp= registers.get("SP");
+        sp.setValue((short) (sp.getValue()-2));
         var buff= memo.read(sp.getValue(),2);
-        sp.setValue((short) (sp.getValue()-16));
         return buff;
     }
     public Register registers(String register){

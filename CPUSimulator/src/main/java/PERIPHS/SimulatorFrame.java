@@ -62,10 +62,14 @@ public class SimulatorFrame {
         screenLabel.setForeground(Color.WHITE);
         screenOutputPanel.add(screenLabel, BorderLayout.NORTH);
         JScrollPane screenScrollPane = new JScrollPane(screenOutput);
-        screenScrollPane.setPreferredSize(new Dimension(600, 800));
+        screenScrollPane.setPreferredSize(new Dimension(800, 600));
+        // screenScrollPane.setPreferredSize(new Dimension(screen.getWidth(), screen.getLength()));
         screenOutputPanel.add(screenScrollPane, BorderLayout.CENTER);
         screenOutputPanel.setBackground(Color.BLACK);
         screenOutputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        int smallerWidth = (int) (screen.getWidth() * 0.8);
+        int smallerLength = (int) (screen.getLength() * 0.8);
 
         JPanel systemPrintsPanel = new JPanel();
         systemPrintsPanel.setLayout(new BorderLayout());
@@ -73,7 +77,8 @@ public class SimulatorFrame {
         systemLabel.setForeground(Color.WHITE);
         systemPrintsPanel.add(systemLabel, BorderLayout.NORTH);
         JScrollPane systemPrintsScrollPane = new JScrollPane(systemPrints);
-        systemPrintsScrollPane.setPreferredSize(new Dimension(400, 200));
+        systemPrintsScrollPane.setPreferredSize(new Dimension(400, 400));
+        // systemPrintsScrollPane.setPreferredSize(new Dimension(smallerWidth, smallerLength));
         systemPrintsPanel.add(systemPrintsScrollPane, BorderLayout.CENTER);
         systemPrintsPanel.setBackground(Color.BLACK);
         systemPrintsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -84,7 +89,8 @@ public class SimulatorFrame {
         keyboardLabel.setForeground(Color.WHITE);
         keyboardPanel.add(keyboardLabel, BorderLayout.NORTH);
         JScrollPane keyboardScrollPane = new JScrollPane(keyboardInput);
-        keyboardScrollPane.setPreferredSize(new Dimension(200, 300));
+        systemPrintsScrollPane.setPreferredSize(new Dimension(400, 400));
+        // keyboardScrollPane.setPreferredSize(new Dimension(smallerWidth, smallerLength));
         keyboardPanel.add(keyboardScrollPane, BorderLayout.CENTER);
         keyboardPanel.setBackground(Color.BLACK);
         keyboardPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

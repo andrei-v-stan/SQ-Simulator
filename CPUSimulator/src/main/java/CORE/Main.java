@@ -28,7 +28,7 @@ public class Main {
 
         Configurator.cpu.loadInstructionMemory(source);
 
-        Configurator.cpu.execute(7, count);
+        Configurator.cpu.execute(9, count);
         Configurator.cpu.registers.entrySet().forEach(x->{System.out.println(x.getKey() + " " + x.getValue().toString());});
         /*System.out.println(
         Configurator.memory.read(Configurator.configFR.getScreenPage(),0,
