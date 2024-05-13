@@ -1,0 +1,6 @@
+mov cx, 6
+mov ax, cx
+add ax, 1
+mul ax, cx
+shr ax, 1
+mov bx, ax
