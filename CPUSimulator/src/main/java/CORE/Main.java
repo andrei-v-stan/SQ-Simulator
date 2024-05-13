@@ -21,7 +21,7 @@ public class Main {
         keyboardThread.start();
         screenThread.start();
 
-        var source = readAssemblyFromFile(resourcesPath + "testcode7.txt");
+        var source = readAssemblyFromFile(resourcesPath + "testcode1.txt");
         System.out.println(source);
 
         int count = countInstructions(source);

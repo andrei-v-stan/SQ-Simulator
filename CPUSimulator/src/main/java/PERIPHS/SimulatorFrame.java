@@ -48,6 +48,8 @@ public class SimulatorFrame {
         });
         */
 
+        Font font = new Font("montserrat", Font.PLAIN, 30);
+        screenOutput.setFont(font);
 
         JTextArea systemPrints = new JTextArea();
         systemPrints.setEditable(false);
