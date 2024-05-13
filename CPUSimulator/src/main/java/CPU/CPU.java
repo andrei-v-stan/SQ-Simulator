@@ -266,9 +266,11 @@ public class CPU {
 
     private void executeInstructionLogical(NamedByte mappedInstr, short firstOperand, short secondOperand, NamedByte modeFirstOperand, NamedByte modeSecondOperand) throws CustomException {
         var firstValue= resolveAddressing(modeFirstOperand.name, firstOperand);
-        var secondValue= resolveAddressing(modeSecondOperand.name, secondOperand);
+        Short secondValue = null;
+        if (modeSecondOperand != null)
+            secondValue= resolveAddressing(modeSecondOperand.name, secondOperand);
 
-        if (firstValue== null || (secondValue == null && mappedInstr.name.equals("NOT"))){
+        if (firstValue== null || (secondValue == null && !mappedInstr.name.equals("NOT"))){
             throw new CustomException("Could not resolve addressing of operands");
         }
 

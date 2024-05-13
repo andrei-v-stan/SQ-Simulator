@@ -59,7 +59,8 @@ public class InstructionSet {
     }
     public static boolean isUnaryOp(NamedByte instr){
         return instr.category.equals("JUMP") || instr.category.equals("FCT")
-                || instr.category.equals("STACK") || instr.name.equals("READ");
+                || instr.category.equals("STACK") || instr.name.equals("READ")
+                || instr.name.equals("NOT");
     }
     public static boolean isImmediateOp(NamedByte instr){
         return instr.category.equals("JUMP") || instr.category.equals("FCT") || instr.category.equals("IO");
