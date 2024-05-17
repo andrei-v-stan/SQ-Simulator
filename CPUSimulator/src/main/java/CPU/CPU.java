@@ -285,7 +285,7 @@ public class CPU {
         writeToAddress(modeFirstOperand.name, firstOperand, result);
     }
 
-    private void executeInstructionArithmetic(NamedByte mappedInstr, short firstOperand, short secondOperand, NamedByte modeFirstOperand, NamedByte modeSecondOperand) throws CustomException {
+    public void executeInstructionArithmetic(NamedByte mappedInstr, short firstOperand, short secondOperand, NamedByte modeFirstOperand, NamedByte modeSecondOperand) throws CustomException {
         var firstValue= resolveAddressing(modeFirstOperand.name, firstOperand);
         var secondValue= resolveAddressing(modeSecondOperand.name, secondOperand);
 
@@ -309,7 +309,7 @@ public class CPU {
         updateFlagsForArithmetic(firstValue, secondValue, result);
         writeToAddress(modeFirstOperand.name, firstOperand, result);
     }
-    private  void writeToAddress(String mode, short location, short result) throws CustomException{
+    public void writeToAddress(String mode, short location, short result) throws CustomException{
         switch (mode){
             case "DIRECT":
                 memo.write(location, result);
@@ -326,7 +326,7 @@ public class CPU {
         }
     }
 
-    private Short resolveAddressing(String mode, short operand) throws CustomException {
+    public Short resolveAddressing(String mode, short operand) throws CustomException {
         switch (mode){
             case "IMMEDIATE":
                 return operand;
@@ -352,7 +352,7 @@ public class CPU {
         }
         return null;
     }
-    private void updateFlagsForArithmetic(short operand1, short operand2, short result) {
+    public void updateFlagsForArithmetic(short operand1, short operand2, short result) {
         CF = (result < operand1) || (result < operand2);
         OF = ((operand1 > 0 && operand2 > 0 && result < 0) || (operand1 < 0 && operand2 < 0 && result > 0));
         SF = (result < 0);
@@ -369,12 +369,12 @@ public class CPU {
         }
         return bitCount % 2 == 0;
     }
-    private void writeToStack(short data){
+    public void writeToStack(short data){
         var sp= registers.get("SP");
         memo.write(sp.getValue(),data);
         sp.setValue((short) (sp.getValue()+2));
     }
-    private short readFromStack() {
+    public short readFromStack() {
         var sp= registers.get("SP");
         sp.setValue((short) (sp.getValue()-2));
         var buff= memo.read(sp.getValue(),2);
