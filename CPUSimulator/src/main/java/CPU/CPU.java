@@ -198,18 +198,18 @@ public class CPU {
         var sp= registers.get("SP");
         switch (mappedInstr.name){
             case "PUSH":
-                if (MemoryManager.isLocationUsed((short) (sp.getValue()+16), 16)){
+                if (MemoryManager.isLocationUsed((short) (sp.getValue()+2), 2)){
                     throw new CustomException("Stack Overflow");
                 }
                 memo.write(sp.getValue(), operand);
-                sp.setValue((short) (sp.getValue()+16));
+                sp.setValue((short) (sp.getValue()+2));
 
                 break;
             case "POP":
-                if (MemoryManager.isLocationUsed((short) (sp.getValue()-16), 16)){
+                if (MemoryManager.isLocationUsed((short) (sp.getValue()-2), 2)){
                     throw new CustomException("Stack Underflow");
                 }
-                writeToAddress(modeOperand.name, operand, memo.read(sp.getValue(), 16));
+                writeToAddress(modeOperand.name, operand, memo.read(sp.getValue(), 2));
 
                 break;
         }
@@ -331,7 +331,7 @@ public class CPU {
             case "IMMEDIATE":
                 return operand;
             case "DIRECT":
-                return memo.read(operand, 16);
+                return memo.read(operand, 2);
             case "REGISTER":
                 var register = searchRegister((byte)operand);
                 if (register == null){

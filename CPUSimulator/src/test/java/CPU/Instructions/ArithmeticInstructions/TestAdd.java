@@ -54,6 +54,52 @@ public class TestAdd {
         }
 
     }
+    void testArithmeticOverflow() {
+        var instruction = new SUT("ADD", "DIRECT", "IMMEDIATE", (short) 0, (short) 32767);
+        try {
+            doReturn((short) 32767).when(spyCPU).resolveAddressing("DIRECT", instruction.firstOperand);
+            doReturn((short) 1).when(spyCPU).resolveAddressing("IMMEDIATE", instruction.secondOperand);
+            spyCPU.executeInstructionArithmetic(instruction.mappedInstr, instruction.firstOperand, instruction.secondOperand,
+                    instruction.modeFirstOperand, instruction.modeSecondOperand);
+            verify(spyCPU).updateFlagsForArithmetic((short) 32767, (short) 1, (short) -32768);
+            verify(spyCPU).writeToAddress(instruction.modeFirstOperand.name, instruction.firstOperand, (short) -32768);
+
+        } catch (CustomException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void testArithmeticNegativeResult() {
+        var instruction = new SUT("ADD", "DIRECT", "IMMEDIATE", (short) 0, (short) -30);
+        try {
+            doReturn((short) 20).when(spyCPU).resolveAddressing("DIRECT", instruction.firstOperand);
+            doReturn((short) -30).when(spyCPU).resolveAddressing("IMMEDIATE", instruction.secondOperand);
+            spyCPU.executeInstructionArithmetic(instruction.mappedInstr, instruction.firstOperand, instruction.secondOperand,
+                    instruction.modeFirstOperand, instruction.modeSecondOperand);
+            verify(spyCPU).updateFlagsForArithmetic((short) 20, (short) -30, (short) -10);
+            verify(spyCPU).writeToAddress(instruction.modeFirstOperand.name, instruction.firstOperand, (short) -10);
+
+        } catch (CustomException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void testArithmeticZeroResult() {
+        var instruction = new SUT("ADD", "DIRECT", "IMMEDIATE", (short) 0, (short) -20);
+        try {
+            doReturn((short) 20).when(spyCPU).resolveAddressing("DIRECT", instruction.firstOperand);
+            doReturn((short) -20).when(spyCPU).resolveAddressing("IMMEDIATE", instruction.secondOperand);
+            spyCPU.executeInstructionArithmetic(instruction.mappedInstr, instruction.firstOperand, instruction.secondOperand,
+                    instruction.modeFirstOperand, instruction.modeSecondOperand);
+            verify(spyCPU).updateFlagsForArithmetic((short) 20, (short) -20, (short) 0);
+            verify(spyCPU).writeToAddress(instruction.modeFirstOperand.name, instruction.firstOperand, (short) 0);
+
+        } catch (CustomException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }

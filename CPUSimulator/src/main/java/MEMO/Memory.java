@@ -12,10 +12,6 @@ public class Memory {
             pages[i] = new MemoryPage(pageSize);
         }
     }
-    private void Initialize(){
-
-
-    }
     public Short read(short location, int length){
         var lookup= read((int)(location)/pageSize, (int)(location)%pageSize, length);
         if (lookup != null)
