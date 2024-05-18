@@ -15,7 +15,7 @@ public class ParserImpl implements Parser {
         }
     }
 
-    public Code parse(String sourceCode) throws CustomException {
+    private Code parse(String sourceCode) throws CustomException {
         var lines = sourceCode.split("\n");
         var code = new Code();
         int lineNumber = 0;
@@ -29,7 +29,7 @@ public class ParserImpl implements Parser {
         return code;
     }
 
-    public Statement getRawInstruction(String line, int lineNumber) throws CustomException {
+    private Statement getRawInstruction(String line, int lineNumber) throws CustomException {
         var tokens = line.split("\\s+");
         if (tokens.length > 3 || tokens.length < 1) {
             throw new CustomException("Invalid instruction syntax, line: " + lineNumber);

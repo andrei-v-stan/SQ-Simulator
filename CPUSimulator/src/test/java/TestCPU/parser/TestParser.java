@@ -176,7 +176,6 @@ class ConvertorTest {
         assertFalse(Convertor.isDirectMemory("abc"));
         assertFalse(Convertor.isDirectMemory(null));
         assertFalse(Convertor.isDirectMemory("[123h]"));
-        // Test fails due to isShortConst() verification
     }
 
     @Test
