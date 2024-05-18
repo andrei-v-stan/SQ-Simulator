@@ -1,5 +1,7 @@
-package CPU.Info;
+package TestCPU.Info;
 
+import CPU.Info.AddressingModes;
+import CPU.Info.NamedByte;
 import UTILS.CustomException;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package CPU.parser;
+package TestCPU.parser;
 
 import CPU.parser.Code;
 import CPU.parser.Convertor;

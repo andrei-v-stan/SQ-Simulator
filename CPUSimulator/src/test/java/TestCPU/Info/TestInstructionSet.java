@@ -1,5 +1,7 @@
-package CPU.Info;
+package TestCPU.Info;
 
+import CPU.Info.InstructionSet;
+import CPU.Info.NamedByte;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 

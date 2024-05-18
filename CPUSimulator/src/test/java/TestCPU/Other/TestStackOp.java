@@ -1,6 +1,7 @@
-package CPU.Other;
+package TestCPU.Other;
 
 import CPU.CPU;
+import CPU.Register;
 import CPU.parser.ParserImpl;
 import MEMO.InstructionMemory;
 import MEMO.Memory;
@@ -24,5 +25,6 @@ public class TestStackOp {
     @Test
     void writeToStack(){
             var mockRegisters= mock(Register.class);
+
     }
 }

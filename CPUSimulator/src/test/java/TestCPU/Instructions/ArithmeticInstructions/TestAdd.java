@@ -1,4 +1,4 @@
-package CPU.Instructions.ArithmeticInstructions;
+package TestCPU.Instructions.ArithmeticInstructions;
 
 import CPU.CPU;
 import CPU.Info.NamedByte;

@@ -1,4 +1,4 @@
-package MEMO;
+package TestMEMO;
 
 import MEMO.Memory;
 import org.junit.jupiter.api.BeforeEach;

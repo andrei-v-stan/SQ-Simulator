@@ -1,5 +1,6 @@
-package MEMO;
+package TestMEMO;
 
+import MEMO.MemoryManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
