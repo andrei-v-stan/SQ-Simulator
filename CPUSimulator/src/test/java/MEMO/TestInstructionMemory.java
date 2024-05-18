@@ -1,5 +1,6 @@
 package MEMO;
 
+import UTILS.CustomException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -59,7 +60,7 @@ public class TestInstructionMemory {
         }
 
         // Try to write one more instruction, which should fail
-        assertThrows(IndexOutOfBoundsException.class, () -> {
+        assertThrows(CustomException.class, () -> {
             instructionMemory.writeInstruction(instruction);
         });
     }
@@ -67,7 +68,7 @@ public class TestInstructionMemory {
     @Test
     void testOutOfBoundsRead() {
         // Attempt to read an instruction when none have been written
-        assertThrows(IndexOutOfBoundsException.class, () -> {
+        assertThrows(CustomException.class, () -> {
             instructionMemory.readInstruction(0);
         });
 
