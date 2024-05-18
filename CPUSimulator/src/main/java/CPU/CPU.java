@@ -236,7 +236,7 @@ public class CPU {
             registers.get("PC").setValue(line);
     }
 
-    private void executeInstructionCompare(NamedByte mappedInstr, short firstOperand, short secondOperand, NamedByte modeFirstOperand, NamedByte modeSecondOperand) throws CustomException {
+    public void executeInstructionCompare(NamedByte mappedInstr, short firstOperand, short secondOperand, NamedByte modeFirstOperand, NamedByte modeSecondOperand) throws CustomException {
         var firstValue= resolveAddressing(modeFirstOperand.name, firstOperand);
         var secondValue= resolveAddressing(modeSecondOperand.name, secondOperand);
 
@@ -246,7 +246,7 @@ public class CPU {
         updateFlagsForArithmetic(firstValue, secondValue, (short) (firstValue - secondValue));
     }
 
-    private void executeInstructionShift(NamedByte mappedInstr, short firstOperand, short secondOperand, NamedByte modeFirstOperand, NamedByte modeSecondOperand) throws CustomException {
+    public void executeInstructionShift(NamedByte mappedInstr, short firstOperand, short secondOperand, NamedByte modeFirstOperand, NamedByte modeSecondOperand) throws CustomException {
         var firstValue= resolveAddressing(modeFirstOperand.name, firstOperand);
         var secondValue= resolveAddressing(modeSecondOperand.name, secondOperand);
 
@@ -264,7 +264,7 @@ public class CPU {
 
     }
 
-    private void executeInstructionLogical(NamedByte mappedInstr, short firstOperand, short secondOperand, NamedByte modeFirstOperand, NamedByte modeSecondOperand) throws CustomException {
+    public void executeInstructionLogical(NamedByte mappedInstr, short firstOperand, short secondOperand, NamedByte modeFirstOperand, NamedByte modeSecondOperand) throws CustomException {
         var firstValue= resolveAddressing(modeFirstOperand.name, firstOperand);
         Short secondValue = null;
         if (modeSecondOperand != null)
