@@ -383,5 +383,9 @@ public class CPU {
     public Register registers(String register){
         return registers.get(register);
     }
+
+    public Object getRegisters() {
+        return registers;
+    }
 }
 
