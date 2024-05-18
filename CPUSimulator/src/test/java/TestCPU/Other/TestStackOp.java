@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 public class TestStackOp {
 
@@ -24,7 +24,18 @@ public class TestStackOp {
 
     @Test
     void writeToStack(){
-            var mockRegisters= mock(Register.class);
+        /*Register mockSPRegister = mock(Register.class);
 
+        // Set up mock SP register value
+        when(spyCPU.getRegisters().get("SP")).thenReturn(mockSPRegister);
+        when(mockSPRegister.getValue()).thenReturn((short) 100);
+
+        // Call writeToStack method
+        spyCPU.writeToStack((short) 42);
+
+        // Verify interactions
+        verify(spyCPU.getMemory()).write((short) 100, (short) 42);
+        verify(mockSPRegister).setValue((short) 102);*/
     }
+
 }
