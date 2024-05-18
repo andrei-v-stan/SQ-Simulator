@@ -38,7 +38,7 @@ public class Code {
         return result;
     }
 
-    void writeToBytes(byte[] result, String operand, boolean isSecond) throws CustomException {
+    public void writeToBytes(byte[] result, String operand, boolean isSecond) throws CustomException {
         var offset = 0;
         if(isSecond) {
             offset += 3;
