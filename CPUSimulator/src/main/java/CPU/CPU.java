@@ -20,6 +20,14 @@ public class CPU {
 
     private boolean EF, CF, OF, SF, PF;
 
+    public Memory getMemo() {
+        return memo;
+    }
+
+    public void setMemo(Memory memo) {
+        this.memo = memo;
+    }
+
     public CPU(InstructionMemory instructionMemory, Memory memo, Parser parser) {
         this.instructionMemory = instructionMemory;
         this.memo = memo;
@@ -360,7 +368,7 @@ public class CPU {
         EF = (result == 0);
     }
 
-    private boolean calculateParity(short result) {
+    public boolean calculateParity(short result) {
         int bitCount = 0;
         for (int i = 0; i < 16; i++) {
             if (((result >> i) & 1) == 1) {
@@ -380,12 +388,48 @@ public class CPU {
         var buff= memo.read(sp.getValue(),2);
         return buff;
     }
-    public Register registers(String register){
-        return registers.get(register);
+    public HashMap<String, Register> getRegisters() {
+        return registers;
     }
 
-    public Object getRegisters() {
-        return registers;
+    public boolean isEF() {
+        return EF;
+    }
+
+    public void setEF(boolean EF) {
+        this.EF = EF;
+    }
+
+    public boolean isCF() {
+        return CF;
+    }
+
+    public void setCF(boolean CF) {
+        this.CF = CF;
+    }
+
+    public boolean isOF() {
+        return OF;
+    }
+
+    public void setOF(boolean OF) {
+        this.OF = OF;
+    }
+
+    public boolean isSF() {
+        return SF;
+    }
+
+    public void setSF(boolean SF) {
+        this.SF = SF;
+    }
+
+    public boolean isPF() {
+        return PF;
+    }
+
+    public void setPF(boolean PF) {
+        this.PF = PF;
     }
 }
 
