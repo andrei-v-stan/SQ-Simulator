@@ -15,16 +15,19 @@ public class Code {
     }
 
     public void addRawInstruction(Statement statement) {
+        assert statements != null : "Code statements are not initialized";
+
         statements.add(statement);
+
+        assert !statements.isEmpty() : "No code statements were added";
     }
 
     public byte[] toBytes(Statement statement) throws CustomException {
-        var result = new byte[7];
-
+        assert statement != null : "Statement must not be null";
         var namedByte = InstructionSet.searchByName(statement.operation);
-        if (namedByte == null) {
-            throw new CustomException("Instruction does not exist: " + statement.operation);
-        }
+        assert namedByte != null : "No instruction found with name '" +  statement.operation + "'";
+
+        var result = new byte[7];
         result[0] = namedByte.opcode;
 
         if (statement.operand1 != null) {
@@ -35,16 +38,19 @@ public class Code {
             writeToBytes(result, statement.operand2, true);
         }
 
+        assert result.length == 7 : "Result must always have length 7";
         return result;
     }
 
     public void writeToBytes(byte[] result, String operand, boolean isSecond) throws CustomException {
+        assert operand != null : "Operand token must not be null";
+
         var offset = 0;
         if(isSecond) {
             offset += 3;
         }
 
-        byte[] bytes = new byte[0];
+        byte[] bytes;
         if(Convertor.isShortConst(operand)) {
             result[1 + offset] = AddressingModes.getCode("IMMEDIATE");
             bytes = Convertor.getBytesFromShort(operand);
@@ -74,5 +80,7 @@ public class Code {
         }
         result[2 + offset] = bytes[0];
         result[3 + offset] = bytes[1];
+
+        assert result.length == 7 : "Byte array result must have length 7";
     }
 }

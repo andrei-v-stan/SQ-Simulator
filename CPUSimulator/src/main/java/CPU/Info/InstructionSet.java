@@ -52,17 +52,23 @@ public class InstructionSet {
     }
 
     public static NamedByte searchByName(String name) {
+        assert name != null : "Instruction name must not be null";
+
         for(var instr : instructions)
             if (instr.name.equals(name))
                 return instr;
         return null;
     }
     public static boolean isUnaryOp(NamedByte instr){
+        assert instr != null : "Instruction name must not be null";
+
         return instr.category.equals("JUMP") || instr.category.equals("FCT")
                 || instr.category.equals("STACK") || instr.name.equals("READ")
                 || instr.name.equals("NOT");
     }
     public static boolean isImmediateOp(NamedByte instr){
+        assert instr != null : "Instruction name must not be null";
+
         return instr.category.equals("JUMP") || instr.category.equals("FCT") || instr.category.equals("IO");
     }
 }

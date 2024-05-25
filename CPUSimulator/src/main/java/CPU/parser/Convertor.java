@@ -100,6 +100,8 @@ public class Convertor {
     }
 
     public static byte[] getBytesFromShort(String operand) {
+        assert operand != null : "Operand must not be null";
+
         var result = new byte[2];
         var value = Short.parseShort(operand);
         result[0] = (byte) ((value >> 8) & 0xFF);
@@ -109,6 +111,8 @@ public class Convertor {
     }
 
     public static byte[] getBytesFromChar(String operand) {
+        assert operand != null : "Operand must not be null";
+
         var result = new byte[2];
         var value = operand.charAt(1);
         result[0] = (byte) ((value >> 8) & 0xFF);
@@ -118,6 +122,8 @@ public class Convertor {
     }
 
     public static byte[] getBytesFromHex(String operand) {
+        assert operand != null : "Operand must not be null";
+
         var result = new byte[2];
         var value = Short.parseShort(operand, 16);
         result[0] = (byte) ((value >> 8) & 0xFF);
@@ -127,6 +133,8 @@ public class Convertor {
     }
 
     public static byte[] getBytesFromRegister(String operand) {
+        assert operand != null : "Operand must not be null";
+
         var result = new byte[2];
         var value = registerCodes.get(operand.toUpperCase());
         result[0] = (byte) ((value >> 8) & 0xFF);
@@ -136,6 +144,8 @@ public class Convertor {
     }
 
     public static byte[] getBytesFromDirectMemory(String operand) {
+        assert operand != null : "Operand must not be null";
+
         var result = new byte[2];
         var addr = operand.substring(1, operand.length() - 1);
         if (isShortConst(operand)) {
@@ -153,6 +163,8 @@ public class Convertor {
     }
 
     public static byte[] getBytesFromIndirectMemory(String operand) {
+        assert operand != null : "Operand must not be null";
+
         var result = new byte[2];
         var register = operand.substring(1, operand.length() - 1);
         var value = registerCodes.get(register);

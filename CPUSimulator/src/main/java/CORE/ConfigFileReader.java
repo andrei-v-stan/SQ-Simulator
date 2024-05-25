@@ -3,6 +3,8 @@ package CORE;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class ConfigFileReader {
 
@@ -43,6 +45,9 @@ public class ConfigFileReader {
     }
 
     private void loadConfig(String filePath) {
+        assert filePath != null : "Filepath must not be null";
+        assert Files.exists(Paths.get(filePath)) : "Invalid filepath: '" + filePath + "'";
+
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {

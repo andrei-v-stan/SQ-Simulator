@@ -26,6 +26,8 @@ public class AddressingModes {
     }
 
     public static byte getCode(String name) throws CustomException {
+        assert name != null : "Accessing mode name must not be null";
+
         for (var mode : accessingModes)
             if (mode.name.equals(name)) {
                 return mode.opcode;

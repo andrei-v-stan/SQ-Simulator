@@ -10,6 +10,11 @@ public class Screen implements Runnable{
     private final int screenWidth;
 
     public Screen(Memory memory, int videoMemoryAddress, int screenLength, int ScreenWidth) {
+        assert memory != null : "Memory is not initialized";
+        assert videoMemoryAddress >= 0 : "Invalid video memory address";
+        assert screenLength > 0 : "Screen length must be greater than 0";
+        assert ScreenWidth > 0 : "Screen width must be greater than 0";
+
         this.memory = memory;
         this.videoMemoryAddress = videoMemoryAddress;
         this.screenLength = screenLength;
@@ -25,9 +30,8 @@ public class Screen implements Runnable{
     }
 
     public void write(int position, byte value) {
-        if (position < 0 || position >= screenLength * screenWidth) {
-            throw new IllegalArgumentException("Position out of bounds");
-        }
+        assert position >= 0 && position < screenLength * screenWidth : "Position out of bounds";
+
         memory.write((short) (videoMemoryAddress + position), (short) (value & 0xFF));
     }
 

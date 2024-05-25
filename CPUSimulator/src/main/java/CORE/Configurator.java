@@ -7,6 +7,11 @@ import MEMO.Memory;
 import PERIPHS.Keyboard;
 import PERIPHS.Screen;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Configurator {
 
     public static CPU cpu;
@@ -18,6 +23,8 @@ public class Configurator {
     public static Screen screen;
 
     public Configurator(String filePath) {
+        assert filePath != null : "Filepath must not be null";
+        assert Files.exists(Paths.get(filePath));
 
         configFR = new ConfigFileReader(filePath);
         System.out.println("pageSize: " + configFR.getPageSize());
