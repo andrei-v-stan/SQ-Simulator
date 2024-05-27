@@ -64,6 +64,8 @@ public class CPU {
 
         int currentInstruction = programOffset;
         while (currentInstruction < instructionCount) {
+            assert registers.get("PC").getValue() == currentInstruction + 1 :
+                    "Invariant violation: register value incorrect";
             registers.get("PC").setValue((short) (currentInstruction + 1));
             var rawInstruction = instructionMemory.readInstruction(currentInstruction);
             try {
@@ -72,6 +74,11 @@ public class CPU {
                 throw new CustomException(String.format("Error at line  %d\n%s", currentInstruction, e.getMessage()));
             }
             currentInstruction = registers.get("PC").getValue();
+            var invariant = currentInstruction >= 0 && currentInstruction < instructionCount;
+            assert invariant : "Current instruction index must be between 0 and instruction count";
+
+            assert registers.get("PC").getValue() == currentInstruction + 1 :
+                    "Invariant violation: PC register value incorrect after iteration";
         }
 
         assert currentInstruction <= instructionCount : "Current instruction index must be less than or equal to instruction count";
